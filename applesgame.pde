@@ -1,9 +1,9 @@
-int sliderHeight = 20;
-int sliderWidth = 1200;
-int sliderY = 450;
-int slidePos = 0;
-int slideWidth = 10;
-boolean gotSlider = false;
+int sliderHeight = 20; // "slider" is the invisible x axis along which the basket moves
+int sliderWidth = 800;
+int sliderY = 650;
+int basketPos = 0;
+int basketWidth = 100;
+boolean gotBasket = false;
 
 Apples r1;
 
@@ -12,7 +12,7 @@ Apples[] apples = new Apples[numApples];
 
 void setup()
 {
-  size(600, 600);
+  size(800, 800);
   background(255);
   frameRate(30);
   
@@ -27,14 +27,14 @@ class Apples
 {
   float x = random(width);
   float y = random(-height);
-
   void fall()
   {
-    y = y + 7;
-    
+    y += 7;
     fill(255, 0, 0);
-    
     ellipse(x, y, 40, 40);
+    if (y >= sliderY) {
+      y = sliderY;
+    }
   }
 }
 
@@ -48,34 +48,38 @@ void draw()
   }
   
   noStroke();
-  fill(255);
+  // basket slider vv
+  fill(100,0); // invisible
   rect(0, sliderY, sliderWidth, sliderHeight);
+  // basket (but right now its a rect) vv
   fill(101, 67, 33);
-  rect(slidePos-slideWidth/2.0, sliderY, slideWidth, sliderHeight);
+  rect(basketPos-basketWidth/2.0, sliderY, basketWidth, sliderHeight);
 }
 
+// if mouse is pressed, "hold" the basket
 void mousePressed()
 {
-  if (mouseY>=sliderY && mouseY<=sliderHeight+sliderY)
+  if (mouseY>= sliderY && mouseY<=sliderHeight+sliderY)
   {
-    if (mouseX >= slidePos-slideWidth && mouseX < slidePos+slideWidth)
+    if (mouseX>=basketPos-basketWidth && mouseX<basketPos+basketWidth)
     {
-      gotSlider = true;
+      gotBasket = true;
     }
   }
 }
 
-
+// if mouse released, dont hold/"move" the basket
 void mouseReleased()
 {
-  if (gotSlider) gotSlider = false;
+  if (gotBasket) gotBasket = false;
 }
 
+// if mouse is "held" and dragged, move the basket with the mouse
 void mouseDragged()
 {
-  if (gotSlider && mouseX<sliderWidth+50)
+  if (gotBasket && mouseX<sliderWidth)
   {
-    slidePos = mouseX;
-    if (slidePos < 0) slidePos = 0;
+    basketPos = mouseX;
+    if (basketPos < 0) basketPos = 0;
   }
 }
