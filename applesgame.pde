@@ -51,7 +51,7 @@ void setup()
   basket = loadImage("cts12_basket.png");
   basket2 = loadImage("cts12_basket2.png");
   size(850, 850);
-  frameRate(45);
+  frameRate(50);
 
   rBound = int(width-(basket.width/2)-100);
   lBound = int(-(basket.width/2)+100);
@@ -99,12 +99,11 @@ class Apples
     popMatrix();
     
     
-    //println(basket2.width+500, int(y));
-    fill(255,0,0);
-    rect(basketPos+basket2.width-5, 0, 1, 1000);
-    rect(basketPos+5 , 0, 1, 1000);
-    rect(0, 700, 1000, 1, 0); // basket level
-    rect(0, basket2.width+500, 1000, 1, 0); // ground level
+    //fill(255,0,0);
+    //rect(basketPos+basket2.width-5, 0, 1, 1000);
+    //rect(basketPos+5 , 0, 1, 1000);
+    //rect(0, 700, 1000, 1, 0); // basket level
+    //rect(0, basket2.width+500, 1000, 1, 0); // ground level
     
         
     if (int(y) <= 1300 && int(y) >= 950 
