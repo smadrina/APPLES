@@ -73,7 +73,6 @@ class Apples
 { 
   float x = random(width);
   float y = random(-height);
-  //float ran = random(2,3);
   
   void replay()
   {
@@ -82,7 +81,6 @@ class Apples
       x = 0;
       y += random(-height);
       x += random(width);
-      //ran = random(3,7);
       numFallen = 0;
       basketApple = 0;
       groundApple = 0;
@@ -98,15 +96,9 @@ class Apples
     image(sapple,x,y-sapple.height);
     popMatrix();
     
-    //fill(255,0,0);
-    //rect(basketPos+basket2.width-5, 0, 1, 1000);
-    //rect(basketPos+5 , 0, 1, 1000);
-    //rect(0, 700, 1000, 1, 0); // basket level
-    //rect(0, basket2.width+500, 1000, 1, 0); // ground level
-        
     if (int(y) <= 1300 && int(y) >= 950 
         && int(x) <= basketPos+330 && int(x) >= basketPos) {
-          //println("caught", 950, int(y), 1300, basketPos+100, int(x), basketPos);
+          // IF APPLE BOTTOM TOUCHES BASKET TOP (CAUGHT)
           if (x > basketPos+basket2.width) { x = 5000; }
           else if (x < basketPos) { x = -1; }
           y = width+sapple.height;
@@ -114,7 +106,7 @@ class Apples
          }
     if (int(y) <= basket2.width+1200+5 && int(y) >= basket2.width+1200-5) 
         { 
-          println("ground",int(y));
+          // IF APPLE BOTTOM TOUCHES BAR TOP (NOT CAUGHT)
           y = width+sapple.height; groundApple ++; 
       }   
         
@@ -130,16 +122,13 @@ class Apples
         return gameOver; }
     return false;
      
- 
-        //rect(0, basket2.width+415, 1000, 1, 0); // basket level
-        //rect(0, basket2.width+500, 1000, 1, 0); // ground level
   }
 }
 
   void draw()
   {
     
-    //STARTUP: DONE
+    //STARTUP
     if (gamePlay == false && gameOver == false) 
     { 
       background(window2); 
@@ -156,14 +145,13 @@ class Apples
         image(fstart, 0, 0);
       }
     }
-    //GAMEPLAY
+    //change dark bg to light bg
     else { 
       background(window); 
       window.loadPixels();
       for (int col=0; col<width; col++) {
         for (int row=0; row<height; row++) {
           int loc = col+row*width;
-          int slide = col+row*width;
           window2.pixels[loc] = window2.pixels[loc];
         }
         window.updatePixels();
@@ -176,7 +164,7 @@ class Apples
       rect(0, sliderY, sliderWidth, sliderHeight);
       image(basket, basketPos, 0);
       
-      
+      //GAME PLAY
       if (basketApple+groundApple != numApples) {
       for (int i = 0; i < numApples; i++) 
       { 
@@ -209,13 +197,12 @@ class Apples
       gamePlay = false;
    }
    
-      
-      //BAR
+      //bottom bar + front basket
       image(basket2, basketPos, 0);
       image(bar, 0, 0);
     }
 
-    //LOST: DONE
+    //LOST SCREEN
     if (gamePlay == false && gameOver == true && gameWon == false && (basketApple+groundApple) == numApples) { 
       background(window2);
       image(lost, 0, 0);
@@ -226,8 +213,6 @@ class Apples
         gamePlay = true; 
         gameOver = false;
         gameWon = false;
-        //x = random(width);
-        //y = random(-height);
         numFallen = 0;
         basketApple = 0;
         groundApple = 0;
@@ -237,7 +222,7 @@ class Apples
       }
     }
 
-    //WON: DONE
+    //WON SCREEN
     if (gamePlay == false && gameOver == true && gameWon == true && (basketApple+groundApple) == numApples) { 
       background(window2);
       image(won, 0, 0);
@@ -248,8 +233,6 @@ class Apples
         gamePlay = true; 
         gameOver = false;
         gameWon = false;
-        //x = random(width);
-        //y = random(-height);
         numFallen = 0;
         basketApple = 0;
         groundApple = 0;
@@ -258,16 +241,6 @@ class Apples
         image(freplay, 0, 0);
       }
     }
-    
-    
-        //rect(0, basket2.width+415, 1000, 1, 0); // basket level
-        //rect(400, 0, 0, 1000); // ground level
-    //fill(233);
-    //rect((width/2)-140,0,1,1000);
-    //rect(0,(height/2)+270,1000,1);
-    //rect((width/2)+135,0,1,1000);
-    //rect(0,(height-60),1000,1);
-    
   }
 
 
