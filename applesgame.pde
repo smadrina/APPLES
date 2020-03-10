@@ -51,7 +51,7 @@ void setup()
   basket = loadImage("cts12_basket.png");
   basket2 = loadImage("cts12_basket2.png");
   size(850, 850);
-  frameRate(40);
+  frameRate(50);
 
   rBound = int(width-(basket.width/2)-100);
   lBound = int(-(basket.width/2)+100);
@@ -77,10 +77,13 @@ class Apples
   void replay()
   {
   if (replayed == true) {
-      x = 0;
       y = 0;
+      x = 0;
       y += random(-height);
-      x += random(width);;
+      x += random(width);
+      numFallen = 0;
+      basketApple = 0;
+      groundApple = 0;
     }
   }
   
@@ -88,21 +91,37 @@ class Apples
   {
     y += 5;
     
-    //image(sapple,x,y);
-    fill(255, 0, 0);
-    ellipse(x, y, 40, 40);
+    pushMatrix();
+    scale(0.75);
+    image(sapple,x,y-sapple.height);
+    popMatrix();
     
     
-    println(basket2.width+500, int(y));
-    rect(basketPos-5+basket2.width, 0, 1, 1000);
-    rect(basketPos+5, 0, 1, 1000);
+    //println(basket2.width+500, int(y));
+    fill(255,0,0);
+    rect(basketPos+basket2.width-5, 0, 1, 1000);
+    rect(basketPos+5 , 0, 1, 1000);
+    rect(0, 700, 1000, 1, 0); // basket level
+    rect(0, basket2.width+500, 1000, 1, 0); // ground level
     
-    
-    
-    if (int(y) <= basket2.width+415+5 && int(y) >= basket2.width+415-5 && int(x) <= basketPos-5+basket2.width && int(x) >= basketPos+5) 
-      { y = height; basketApple ++; println("caught");}
-    if (int(y) <= basket2.width+500+5 && int(y) >= basket2.width+500-5) 
-      { y = height; groundApple ++; println("ground");}
+        
+    if (int(y) <= 700+5 && int(y) >= 700-5 
+        && int(x) <= basketPos+basket2.width-5 && int(x) >= basketPos+5) {
+          if (x > basketPos+basket2.width-5) { x = basketPos+basket2.width; }
+          else if (x < basketPos+5) { x = basketPos; }
+          println("caught", 700+15, int(y), 700-15);
+          
+          y = width+sapple.height;
+        basketApple ++; 
+         }
+        
+    if (int(y) <= basket2.width+800+5 && int(y) >= basket2.width+800-5) 
+        { 
+          println("ground",700+15, int(y), 700-15);
+          
+          y = width+sapple.height; groundApple ++; 
+      }   
+        
     if (numApples == basketApple)
       { gamePlay = false;
         gameWon = true;
@@ -132,7 +151,7 @@ class Apples
       if (mouseX>(width/2)-140 && mouseX<(width/2)+140 && mouseY>(height/2)+250 && mouseY<(height-60)) 
       { 
         image(tstart, 0, 0);
-      } else if (mouseClicked || mousePressed) { 
+      } else if (mouseClicked) { 
         gamePlay = true;
         numFallen = 0;
         basketApple = 0;
@@ -162,7 +181,7 @@ class Apples
       image(basket, basketPos, 0);
       
       
-      if (numFallen < numApples && (basketApple+groundApple) != numApples) {
+      if (basketApple+groundApple != numApples) {
       for (int i = 0; i < numApples; i++) 
       { 
         if (replayed == true)
@@ -193,6 +212,7 @@ class Apples
       gameOver = true;
       gamePlay = false;
    }
+   
       
       //BAR
       image(basket2, basketPos, 0);
@@ -206,7 +226,7 @@ class Apples
       image(lost2, 0, 0);
       if (mouseX>(width/2)-140 && mouseX<(width/2)+140 && mouseY>(height/2)+250 && mouseY<(height-60)) {
         image(treplay, 0, 0);
-      } else if (mouseClicked || mousePressed) { 
+       if (mouseClicked) { 
         gamePlay = true; 
         gameOver = false;
         gameWon = false;
@@ -216,7 +236,7 @@ class Apples
         basketApple = 0;
         groundApple = 0;
         replayed = true;
-      } else { 
+      } } else { 
         image(freplay, 0, 0);
       }
     }
@@ -228,7 +248,7 @@ class Apples
       image(won2, 0, 0);
       if (mouseX>(width/2)-140 && mouseX<(width/2)+140 && mouseY>(height/2)+250 && mouseY<(height-60)) {
         image(treplay, 0, 0);
-      } else if (mouseClicked || mousePressed) { 
+      if (mouseClicked) { 
         gamePlay = true; 
         gameOver = false;
         gameWon = false;
@@ -238,14 +258,14 @@ class Apples
         basketApple = 0;
         groundApple = 0;
         replayed = true;
-      } else { 
+      } } else { 
         image(freplay, 0, 0);
       }
     }
     
     
-        rect(0, basket2.width+415, 1000, 1, 0); // basket level
-        rect(0, basket2.width+500, 1000, 1, 0); // ground level
+        //rect(0, basket2.width+415, 1000, 1, 0); // basket level
+        //rect(0, basket2.width+500, 1000, 1, 0); // ground level
     
     
   }
