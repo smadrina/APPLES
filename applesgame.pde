@@ -96,12 +96,16 @@ class Apples
     image(sapple,x,y-sapple.height);
     popMatrix();
     
-    fill(255,0,0);
-    rect(basketPos-(basket.width/2), 0, 1, 1000);
-    fill(0,255,0);
-    rect(basketPos+(basket.width/2), 0, 1, 1000);
+    //fill(255,0,0); // L BOUND
+    //rect(basketPos-(basket.width/2), 0, 1, 1000);
+    //fill(0,255,0); // R BOUND
+    //rect(basketPos+(basket.width/2), 0, 1, 1000);
+    fill(255,0,0); // U BOUND
+    rect(0, 670, 1000, 1);
+    fill(0, 255,0); // D BOUND
+    rect(0, 770, 1000, 1);
     
-    if (int(y) <= 1300 && int(y) >= 950 
+    if (int(y) <= 1200 && int(y) >= 900
         && int(x) >= basketPos-(basket.width/2) && int(x) <= basketPos+(basket.width/2)) {
           // IF APPLE BOTTOM TOUCHES BASKET TOP (CAUGHT)
           if (x > basketPos+basket2.width) { x = 5000; }
