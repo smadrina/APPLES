@@ -12,18 +12,25 @@ boolean mouseClicked = false;
 boolean mouseReleased = false;
 boolean mousePressed = false;
 boolean mouseDragged = false;
-int score = 0;
+int basketApple = 0;
+int groundApple = 0;
 int numFallen = 0;
+boolean inBasket = false;
+boolean onGround = false;
 
 Apples r1;
-int numApples = 25;
+int numApples = 5;
 Apples[] apples = new Apples[numApples];
+int [] fallenApple = new int[numApples];
 
 void setup()
-{ if (gamePlay == false) {
-  score = 0;
-  numFallen = 0; }
-  
+{ 
+  if (gamePlay == false) {
+    basketApple = 0;
+    groundApple = 0;
+    numFallen = 0;
+  }
+
   window = loadImage("cts12_window.png");
   window2 = loadImage("cts12_window2.png");
   start = loadImage("cts12_start.png");
@@ -42,145 +49,218 @@ void setup()
   basket2 = loadImage("cts12_basket2.png");
   size(850, 850);
   frameRate(40);
-  
+
   rBound = int(width-(basket.width/2)-100);
   lBound = int(-(basket.width/2)+100);
-  
-  if (mouseX <= lBound) { mouseX = 0; }
-  else if (rBound <= mouseX) { mouseX = width; }
-  
+
+  if (mouseX <= lBound) { 
+    mouseX = 0;
+  } else if (rBound <= mouseX) { 
+    mouseX = width;
+  }
+
   for (int i = 0; i < numApples; i++) 
-  { apples[i] = new Apples(); // Create each object
-    r1 = new Apples(); } }
+  { 
+    apples[i] = new Apples(); // Create each object
+    r1 = new Apples();
+  }
+}
+
+
 
 class Apples
-{
+{ 
   float x = random(width);
   float y = random(-height);
-  
-  //void fall(int i)
-  //{ y += 8;
-  //  fill(255, 0, 0);
-  //  ellipse(x, y, 40, 40);
-  //  if (y>=0 && basketPos<x && x<(basket.width+basketPos)) { 
-  //    println("caught",i,numApples-1,score, numFallen);
-  //    score++; 
-  //    numFallen++; }
-  //  if (y==700) {
-  //    println("ground",i,numApples-1,score, numFallen); }
-  //    numFallen++;
-  boolean appleFallen=false;
-  void fall(int i)
+  boolean fall(int i)
   {
-    y += 7;
+    y += 5;
     fill(255, 0, 0);
     ellipse(x, y, 40, 40);
-    appleFallen=false;
-     if (y<=sliderY && y>=sliderY-sliderHeight){
-       if (x>=basketPos && x<basketPos+basket.width){
-     println("caught");
-     score++;
-     appleFallen=true;
-     }
+    if (x>=basketPos && x<basketPos+basket.height && y>=basket2.height-5 && y<=basket2.height+5) {
+      y=basket2.height;
+      inBasket = true;
+      println(i, "inBasket", gamePlay, gameOver, gameWon, numFallen, basketApple, groundApple); //ftftf,
+      //fallenApple[i] = i;
+      //if (fallenApple.contains(i)) {
+      //  return true; }
+    }
+    if (y>=800 && x<basketPos && x>basketPos+basket.height) {
+      onGround = true;
+      println(i, "onGround", gamePlay, gameOver, gameWon, numFallen, basketApple, groundApple); //tftff,tfftf
+      return true;
+    }
+    return false;
   }
-    if (y >= 700) {
-      y = 700;
-      println("ground");
-      appleFallen=true;
-    //if (i == numApples-1) {
-    //  gameOver = true; 
-    //  gamePlay = false;
-    //  if (numApples-1 == score) 
-    //    { gameWon = true; }
-    //  return; }
-  }
-}}
+}
 
-void draw()
-{
-  //STARTUP: DONE
-  if (gamePlay == false && gameOver == false) { background(window2);
-    image(start,0,0);
-    if (mouseX>(width/2)-140 && mouseX<(width/2)+140 && mouseY>(height/2)+250 && mouseY<(height-60)) {
-      image(tstart,0,0); }
-    else if (mouseClicked || mousePressed) { gamePlay = true; }
-    else { image(fstart,0,0); }
+  void draw()
+  {
     
-  }
-  //GAMEPLAY
-  else { background(window); 
+    //STARTUP: DONE
+    if (gamePlay == false && gameOver == false) 
+    { 
+      background(window2); 
+      image(start, 0, 0);
+      if (mouseX>(width/2)-140 && mouseX<(width/2)+140 && mouseY>(height/2)+250 && mouseY<(height-60)) 
+      { 
+        image(tstart, 0, 0);
+      } else if (mouseClicked || mousePressed) { 
+        gamePlay = true;
+        numFallen = 0;
+        basketApple = 0;
+        groundApple = 0;
+      } else { 
+        image(fstart, 0, 0);
+      }
+    }
+    //GAMEPLAY
+    else { 
+      background(window); 
       window.loadPixels();
       for (int col=0; col<width; col++) {
         for (int row=0; row<height; row++) {
           int loc = col+row*width;
           int slide = col+row*width;
-          window2.pixels[loc] = window2.pixels[loc]; 
-      }
-      window.updatePixels(); } 
+          window2.pixels[loc] = window2.pixels[loc];
+        }
+        window.updatePixels();
+      } 
+
+      //SLIDER/BASKET
+      noStroke();
+      // basket slider vv
+      fill(100, 0); // invisible
+      rect(0, sliderY, sliderWidth, sliderHeight);
+      image(basket, basketPos, 0);
       
-  //SLIDER/BASKET
-  noStroke();
-  // basket slider vv
-  fill(100,0); // invisible
-  rect(0, sliderY, sliderWidth, sliderHeight);
-  image(basket,basketPos,0);
-  
-  for (int i = 0; i < numApples; i++) 
-  { apples[i].fall(i); 
-    if (gameOver == true) 
-      { gamePlay = false; break; }}
-    
-  //BAR
-  image(basket2,basketPos,0);
-  image(bar,0,0); 
-}
-    
-  //LOST: DONE
-  if (gamePlay == false && gameOver == true && gameWon == false && numFallen == numApples-1) { background(window2);
-    image(lost,0,0);
-    image(lost2,0,0);
-    if (mouseX>(width/2)-140 && mouseX<(width/2)+140 && mouseY>(height/2)+250 && mouseY<(height-60)) {
-      image(treplay,0,0); }
-    else if (mouseClicked || mousePressed) { gamePlay = true; gameOver = false;}
-    else { image(freplay,0,0); } }
-    
-  //WON: DONE
-  if (gamePlay == false && gameOver == true && gameWon == true && numFallen == numApples-1) { background(window2);
-    image(won,0,0);
-    image(won2,0,0);
-    if (mouseX>(width/2)-140 && mouseX<(width/2)+140 && mouseY>(height/2)+250 && mouseY<(height-60)) {
-      image(treplay,0,0); }
-    else if (mouseClicked || mousePressed) { gamePlay = true; gameOver = false;}
-    else { image(freplay,0,0); } } }
+      
+      if (numFallen < numApples && (basketApple+groundApple) != numApples) {
+      for (int i = 0; i < numApples; i++) 
+      { 
+        apples[i].fall(i); 
+        if (inBasket == true) { 
+          basketApple +=1; 
+          numFallen +=1;
+          println(inBasket, onGround, numFallen, groundApple, basketApple);
+        }
+        if (onGround == true) { 
+          groundApple +=1; 
+          numFallen +=1;
+          println(inBasket, onGround, numFallen, groundApple, basketApple);
+        }
+        if (numFallen == numApples-1) 
+        { 
+          gameOver = true; 
+        if (gameOver == true) {
+          if (basketApple == numFallen) { 
+            gameWon = true; 
+            gamePlay = false;
+          }
+          else { 
+            gameWon = false; 
+            gamePlay = false;
+          }
+        }
+        }
+      onGround = false;
+      inBasket = false;
+      }
+      gameOver = true;
+      gamePlay = false;
+   }
+      
+      //BAR
+      image(basket2, basketPos, 0);
+      image(bar, 0, 0);
+    }
 
-// if mouse is pressed, "hold" the basket
-void mousePressed()
-{ mousePressed = true;
-  mouseReleased = false;
-  mouseDragged = false;
-  mouseClicked = false;
-  if (mouseY >= sliderY)
-    { gotBasket = true; } }
+    //LOST: DONE
+    if (gamePlay == false && gameOver == true && gameWon == false && (basketApple+groundApple) == numApples) { 
+      background(window2);
+      image(lost, 0, 0);
+      image(lost2, 0, 0);
+      if (mouseX>(width/2)-140 && mouseX<(width/2)+140 && mouseY>(height/2)+250 && mouseY<(height-60)) {
+        image(treplay, 0, 0);
+      } else if (mouseClicked || mousePressed) { 
+        gamePlay = true; 
+        gameOver = false;
+        gameWon = false;
+        numFallen = 0;
+        basketApple = 0;
+        groundApple = 0;
+      } else { 
+        image(freplay, 0, 0);
+      }
+    }
 
-// if mouse released, dont hold/"move" the basket
-void mouseReleased()
-{ mouseReleased = true;
-  mouseDragged = false;
-  mouseClicked = false;
-  mousePressed = false;
-if (gotBasket) gotBasket = false; }
-
-// if mouse is "held" and dragged, move the basket with the mouse
-void mouseDragged()
-{ mouseDragged = true;
-  mouseReleased = false;
-  mousePressed = false;
-  mouseClicked = false;
-  if (gotBasket && mouseX<rBound && mouseX>=lBound)
-  { basketPos = mouseX; } }
+    //WON: DONE
+    if (gamePlay == false && gameOver == true && gameWon == true && (basketApple+groundApple) == numApples) { 
+      background(window2);
+      image(won, 0, 0);
+      image(won2, 0, 0);
+      if (mouseX>(width/2)-140 && mouseX<(width/2)+140 && mouseY>(height/2)+250 && mouseY<(height-60)) {
+        image(treplay, 0, 0);
+      } else if (mouseClicked || mousePressed) { 
+        gamePlay = true; 
+        gameOver = false;
+        gameWon = false;
+        numFallen = 0;
+        basketApple = 0;
+        groundApple = 0;
+      } else { 
+        image(freplay, 0, 0);
+      }
+    }
     
-void mouseClicked()
-{ mouseClicked = true;
-  mouseDragged = false;
-  mouseReleased = false;
-  mousePressed = false; }
+    
+        rect(0, basket2.width+415, 1000, 1, 0); // basket level
+        rect(0, basket2.width+500, 1000, 1, 0); // ground level
+    
+    
+  }
+
+
+  // if mouse is pressed, "hold" the basket
+  void mousePressed()
+  { 
+    mousePressed = true;
+    mouseReleased = false;
+    mouseDragged = false;
+    mouseClicked = false;
+    if (mouseY >= sliderY)
+    { 
+      gotBasket = true;
+    }
+  }
+
+  // if mouse released, dont hold/"move" the basket
+  void mouseReleased()
+  { 
+    mouseReleased = true;
+    mouseDragged = false;
+    mouseClicked = false;
+    mousePressed = false;
+    if (gotBasket) gotBasket = false;
+  }
+
+  // if mouse is "held" and dragged, move the basket with the mouse
+  void mouseDragged()
+  { 
+    mouseDragged = true;
+    mouseReleased = false;
+    mousePressed = false;
+    mouseClicked = false;
+    if (gotBasket && mouseX<rBound && mouseX>=lBound)
+    { 
+      basketPos = mouseX;
+    }
+  }
+
+  void mouseClicked()
+  { 
+    mouseClicked = true;
+    mouseDragged = false;
+    mouseReleased = false;
+    mousePressed = false;
+  }
