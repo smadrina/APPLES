@@ -53,8 +53,8 @@ void setup()
   size(850, 850);
   frameRate(50);
 
-  rBound = int(width-(basket.width/2)-100);
-  lBound = int(-(basket.width/2)+100);
+  lBound = int(0);
+  rBound = int(width);
 
   if (mouseX <= lBound) { 
     mouseX = 0;
@@ -96,8 +96,13 @@ class Apples
     image(sapple,x,y-sapple.height);
     popMatrix();
     
+    fill(255,0,0);
+    rect(basketPos-(basket.width/2), 0, 1, 1000);
+    fill(0,255,0);
+    rect(basketPos+(basket.width/2), 0, 1, 1000);
+    
     if (int(y) <= 1300 && int(y) >= 950 
-        && int(x) <= basketPos+330 && int(x) >= basketPos) {
+        && int(x) >= basketPos-(basket.width/2) && int(x) <= basketPos+(basket.width/2)) {
           // IF APPLE BOTTOM TOUCHES BASKET TOP (CAUGHT)
           if (x > basketPos+basket2.width) { x = 5000; }
           else if (x < basketPos) { x = -1; }
@@ -162,7 +167,7 @@ class Apples
       // basket slider vv
       fill(100, 0); // invisible
       rect(0, sliderY, sliderWidth, sliderHeight);
-      image(basket, basketPos, 0);
+      image(basket, basketPos-(basket.width/2), 0);
       
       //GAME PLAY
       if (basketApple+groundApple != numApples) {
@@ -195,10 +200,10 @@ class Apples
       }
       gameOver = true;
       gamePlay = false;
-   }
+   } //<>// //<>// //<>// //<>//
    
       //bottom bar + front basket
-      image(basket2, basketPos, 0);
+      image(basket2, basketPos-(basket.width/2), 0);
       image(bar, 0, 0);
     }
 
