@@ -22,7 +22,7 @@ float y = 0;
 boolean replayed = false;
 
 Apples r1;
-int numApples = 5;
+int numApples = 10;
 Apples[] apples = new Apples[numApples];
 int [] fallenApple = new int[numApples];
 
@@ -73,7 +73,7 @@ class Apples
 { 
   float x = random(width);
   float y = random(-height);
-  float ran = random(1,6);
+  //float ran = random(2,3);
   
   void replay()
   {
@@ -82,7 +82,7 @@ class Apples
       x = 0;
       y += random(-height);
       x += random(width);
-      ran = random(7,10);
+      //ran = random(3,7);
       numFallen = 0;
       basketApple = 0;
       groundApple = 0;
@@ -91,7 +91,7 @@ class Apples
   
   boolean fall()
   {
-    y += 1+ran;
+    y += 5;
     
     pushMatrix();
     scale(0.75);
@@ -99,7 +99,7 @@ class Apples
     popMatrix();
     
     
-    //fill(255,0,0);
+    fill(255,0,0);
     //rect(basketPos+basket2.width-5, 0, 1, 1000);
     //rect(basketPos+5 , 0, 1, 1000);
     //rect(0, 700, 1000, 1, 0); // basket level
@@ -107,11 +107,13 @@ class Apples
     
         
     if (int(y) <= 1300 && int(y) >= 950 
-        && int(x) <= basketPos+basket2.height && int(x) >= basketPos) {
-          if (x > basketPos+basket2.width) { x = basketPos+basket2.width; }
-          else if (x < basketPos) { x = basketPos; }
-          println("caught", 750+15, int(y), 750-15);
+        && int(x) <= basketPos+400 && int(x) >= basketPos) {
           
+          println("caught", 950, int(y), 1300, basketPos+100, int(x), basketPos);
+       
+          
+          if (x > basketPos+basket2.width) { x = 5000; }
+          else if (x < basketPos) { x = -1; }
           y = width+sapple.height;
         basketApple ++; 
          }
@@ -266,7 +268,7 @@ class Apples
     
     
         //rect(0, basket2.width+415, 1000, 1, 0); // basket level
-        //rect(0, basket2.width+500, 1000, 1, 0); // ground level
+        //rect(400, 0, 0, 1000); // ground level
     
     
   }
