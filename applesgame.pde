@@ -220,7 +220,7 @@ class Apples
       image(lost2, 0, 0);
       if (mouseX>(width/2)-140 && mouseX<(width/2)+140 && mouseY>(height/2)+250 && mouseY<(height-60)) {
         image(treplay, 0, 0);
-      } else if (mouseClicked) { 
+       if (mouseClicked) { 
         gamePlay = true; 
         gameOver = false;
         gameWon = false;
@@ -230,7 +230,7 @@ class Apples
         basketApple = 0;
         groundApple = 0;
         replayed = true;
-      } else { 
+      } } else { 
         image(freplay, 0, 0);
       }
     }
@@ -242,7 +242,7 @@ class Apples
       image(won2, 0, 0);
       if (mouseX>(width/2)-140 && mouseX<(width/2)+140 && mouseY>(height/2)+250 && mouseY<(height-60)) {
         image(treplay, 0, 0);
-      } else if (mouseClicked) { 
+      if (mouseClicked) { 
         gamePlay = true; 
         gameOver = false;
         gameWon = false;
@@ -252,7 +252,7 @@ class Apples
         basketApple = 0;
         groundApple = 0;
         replayed = true;
-      } else { 
+      } } else { 
         image(freplay, 0, 0);
       }
     }
