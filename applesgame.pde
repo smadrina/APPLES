@@ -98,30 +98,23 @@ class Apples
     image(sapple,x,y-sapple.height);
     popMatrix();
     
-    
-    fill(255,0,0);
+    //fill(255,0,0);
     //rect(basketPos+basket2.width-5, 0, 1, 1000);
     //rect(basketPos+5 , 0, 1, 1000);
     //rect(0, 700, 1000, 1, 0); // basket level
     //rect(0, basket2.width+500, 1000, 1, 0); // ground level
-    
         
     if (int(y) <= 1300 && int(y) >= 950 
-        && int(x) <= basketPos+400 && int(x) >= basketPos) {
-          
-          println("caught", 950, int(y), 1300, basketPos+100, int(x), basketPos);
-       
-          
+        && int(x) <= basketPos+330 && int(x) >= basketPos) {
+          //println("caught", 950, int(y), 1300, basketPos+100, int(x), basketPos);
           if (x > basketPos+basket2.width) { x = 5000; }
           else if (x < basketPos) { x = -1; }
           y = width+sapple.height;
         basketApple ++; 
          }
-        
     if (int(y) <= basket2.width+1200+5 && int(y) >= basket2.width+1200-5) 
         { 
           println("ground",int(y));
-          
           y = width+sapple.height; groundApple ++; 
       }   
         
@@ -227,9 +220,9 @@ class Apples
       background(window2);
       image(lost, 0, 0);
       image(lost2, 0, 0);
-      if (mouseX>(width/2)-140 && mouseX<(width/2)+140 && mouseY>(height/2)+250 && mouseY<(height-60)) {
+      if (mouseX>(width/2)-140 && mouseX<(width/2)+135 && mouseY>(height/2)+270 && mouseY<(height-60)) {
         image(treplay, 0, 0);
-       if (mouseClicked) { 
+       if (mouseClicked && mouseX>(width/2)-140 && mouseX<(width/2)+135 && mouseY>(height/2)+270 && mouseY<(height-60)) { 
         gamePlay = true; 
         gameOver = false;
         gameWon = false;
@@ -249,9 +242,9 @@ class Apples
       background(window2);
       image(won, 0, 0);
       image(won2, 0, 0);
-      if (mouseX>(width/2)-140 && mouseX<(width/2)+140 && mouseY>(height/2)+250 && mouseY<(height-60)) {
+      if (mouseX>(width/2)-140 && mouseX<(width/2)+135 && mouseY>(height/2)+270 && mouseY<(height-60)) {
         image(treplay, 0, 0);
-      if (mouseClicked) { 
+      if (mouseClicked && mouseX>(width/2)-140 && mouseX<(width/2)+135 && mouseY>(height/2)+270 && mouseY<(height-60)) { 
         gamePlay = true; 
         gameOver = false;
         gameWon = false;
@@ -269,7 +262,11 @@ class Apples
     
         //rect(0, basket2.width+415, 1000, 1, 0); // basket level
         //rect(400, 0, 0, 1000); // ground level
-    
+    //fill(233);
+    //rect((width/2)-140,0,1,1000);
+    //rect(0,(height/2)+270,1000,1);
+    //rect((width/2)+135,0,1,1000);
+    //rect(0,(height-60),1000,1);
     
   }
 
