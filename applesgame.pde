@@ -105,19 +105,19 @@ class Apples
     rect(0, basket2.width+500, 1000, 1, 0); // ground level
     
         
-    if (int(y) <= 700+5 && int(y) >= 700-5 
-        && int(x) <= basketPos+basket2.width-5 && int(x) >= basketPos+5) {
-          if (x > basketPos+basket2.width-5) { x = basketPos+basket2.width; }
-          else if (x < basketPos+5) { x = basketPos; }
-          println("caught", 700+15, int(y), 700-15);
+    if (int(y) <= 1300 && int(y) >= 700 
+        && int(x) <= basketPos+basket2.height && int(x) >= basketPos) {
+          if (x > basketPos+basket2.width) { x = basketPos+basket2.width; }
+          else if (x < basketPos) { x = basketPos; }
+          println("caught", 750+15, int(y), 750-15);
           
           y = width+sapple.height;
         basketApple ++; 
          }
         
-    if (int(y) <= basket2.width+800+5 && int(y) >= basket2.width+800-5) 
+    if (int(y) <= basket2.width+1200+5 && int(y) >= basket2.width+1200-5) 
         { 
-          println("ground",700+15, int(y), 700-15);
+          println("ground",int(y));
           
           y = width+sapple.height; groundApple ++; 
       }   
