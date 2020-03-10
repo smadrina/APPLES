@@ -51,7 +51,7 @@ void setup()
   basket = loadImage("cts12_basket.png");
   basket2 = loadImage("cts12_basket2.png");
   size(850, 850);
-  frameRate(50);
+  frameRate(45);
 
   rBound = int(width-(basket.width/2)-100);
   lBound = int(-(basket.width/2)+100);
@@ -73,6 +73,7 @@ class Apples
 { 
   float x = random(width);
   float y = random(-height);
+  float ran = random(1,6);
   
   void replay()
   {
@@ -81,6 +82,7 @@ class Apples
       x = 0;
       y += random(-height);
       x += random(width);
+      ran = random(7,10);
       numFallen = 0;
       basketApple = 0;
       groundApple = 0;
@@ -89,7 +91,7 @@ class Apples
   
   boolean fall()
   {
-    y += 5;
+    y += 1+ran;
     
     pushMatrix();
     scale(0.75);
@@ -105,7 +107,7 @@ class Apples
     rect(0, basket2.width+500, 1000, 1, 0); // ground level
     
         
-    if (int(y) <= 1300 && int(y) >= 700 
+    if (int(y) <= 1300 && int(y) >= 950 
         && int(x) <= basketPos+basket2.height && int(x) >= basketPos) {
           if (x > basketPos+basket2.width) { x = basketPos+basket2.width; }
           else if (x < basketPos) { x = basketPos; }
