@@ -17,6 +17,9 @@ int groundApple = 0;
 int numFallen = 0;
 boolean inBasket = false;
 boolean onGround = false;
+float x = 0;
+float y = 0;
+boolean replayed = false;
 
 Apples r1;
 int numApples = 5;
@@ -66,31 +69,55 @@ void setup()
   }
 }
 
-
-
 class Apples
 { 
   float x = random(width);
   float y = random(-height);
-  boolean fall(int i)
+  
+  void replay()
+  {
+  if (replayed == true) {
+      x = 0;
+      y = 0;
+      y += random(-height);
+      x += random(width);;
+    }
+  }
+  
+  boolean fall()
   {
     y += 5;
+    
+    //image(sapple,x,y);
     fill(255, 0, 0);
     ellipse(x, y, 40, 40);
-    if (x>=basketPos && x<basketPos+basket.height && y>=basket2.height-5 && y<=basket2.height+5) {
-      y=basket2.height;
-      inBasket = true;
-      println(i, "inBasket", gamePlay, gameOver, gameWon, numFallen, basketApple, groundApple); //ftftf,
-      //fallenApple[i] = i;
-      //if (fallenApple.contains(i)) {
-      //  return true; }
-    }
-    if (y>=800 && x<basketPos && x>basketPos+basket.height) {
-      onGround = true;
-      println(i, "onGround", gamePlay, gameOver, gameWon, numFallen, basketApple, groundApple); //tftff,tfftf
-      return true;
-    }
+    
+    
+    println(basket2.width+500, int(y));
+    rect(basketPos-5+basket2.width, 0, 1, 1000);
+    rect(basketPos+5, 0, 1, 1000);
+    
+    
+    
+    if (int(y) <= basket2.width+415+5 && int(y) >= basket2.width+415-5 && int(x) <= basketPos-5+basket2.width && int(x) >= basketPos+5) 
+      { y = height; basketApple ++; println("caught");}
+    if (int(y) <= basket2.width+500+5 && int(y) >= basket2.width+500-5) 
+      { y = height; groundApple ++; println("ground");}
+    if (numApples == basketApple)
+      { gamePlay = false;
+        gameWon = true;
+        gameOver = true;
+        return gameOver; }
+    else if (numApples != basketApple)
+      { gamePlay = false;
+        gameWon = false;
+        gameOver = true;
+        return gameOver; }
     return false;
+     
+ 
+        //rect(0, basket2.width+415, 1000, 1, 0); // basket level
+        //rect(0, basket2.width+500, 1000, 1, 0); // ground level
   }
 }
 
@@ -138,17 +165,14 @@ class Apples
       if (numFallen < numApples && (basketApple+groundApple) != numApples) {
       for (int i = 0; i < numApples; i++) 
       { 
-        apples[i].fall(i); 
-        if (inBasket == true) { 
-          basketApple +=1; 
-          numFallen +=1;
-          println(inBasket, onGround, numFallen, groundApple, basketApple);
+        if (replayed == true)
+          { apples[i].replay(); 
+            println(i);
+            if (i == numApples-1)
+            { replayed = false; }
         }
-        if (onGround == true) { 
-          groundApple +=1; 
-          numFallen +=1;
-          println(inBasket, onGround, numFallen, groundApple, basketApple);
-        }
+          
+        apples[i].fall(); 
         if (numFallen == numApples-1) 
         { 
           gameOver = true; 
@@ -186,9 +210,12 @@ class Apples
         gamePlay = true; 
         gameOver = false;
         gameWon = false;
+        //x = random(width);
+        //y = random(-height);
         numFallen = 0;
         basketApple = 0;
         groundApple = 0;
+        replayed = true;
       } else { 
         image(freplay, 0, 0);
       }
@@ -205,9 +232,12 @@ class Apples
         gamePlay = true; 
         gameOver = false;
         gameWon = false;
+        //x = random(width);
+        //y = random(-height);
         numFallen = 0;
         basketApple = 0;
         groundApple = 0;
+        replayed = true;
       } else { 
         image(freplay, 0, 0);
       }
